@@ -1,0 +1,3 @@
+python-telegram-bot
+spotdl
+Pydub

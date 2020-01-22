@@ -31,8 +31,6 @@ def get_single_song(bot, update):
     os.system(f'spotdl --song {url} --folder ./.temp --file-format track{message_id}{chat_id}')
 
     logging.log(logging.INFO, 'sending to client')
-    files = [f for f in listdir('./.temp') if isfile(join('./.temp', f))]
-    print(files)
     bot.send_message(chat_id=chat_id, text="sending to you...")
     bot.send_audio(chat_id=chat_id, audio=open(f'./.temp/track{message_id}{chat_id}.mp3', 'rb'), timeout=1000)
 
@@ -40,8 +38,6 @@ def get_single_song(bot, update):
     os.system(f'rm ./.temp/track{message_id}{chat_id}.mp3')
 
 
-# handler = MessageHandler(Filters.audio, change_caption, channel_post_updates=True, message_updates=False)
-# handler = CommandHandler("ok", echo)
 handler = MessageHandler(Filters.text, get_single_song)
 dispatcher.add_handler(handler=handler)
 

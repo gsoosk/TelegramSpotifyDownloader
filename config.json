@@ -1,8 +1,8 @@
 {
-  "TOKEN": "1071332657:AAEsP203ZzhahL0rZ5vWgP0v9LmhbV6cMD4",
+  "TOKEN": "",
   "AUTH": {
     "ENABLE": false,
-    "PASSWORD": "HelloSpotify",
+    "PASSWORD": "",
     "USERS": []
   }
 }

@@ -18,4 +18,5 @@ Then you can run program with this command:
 ```
 python main.py
 ```
-
+## Authentication
+For a simple authentication you can enable it in config file by setting `ENABLE` to `true`. You also should set `PASSWORD` which users can authentican with. Bot uses config file to save users also. 

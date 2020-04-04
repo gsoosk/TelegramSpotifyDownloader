@@ -33,7 +33,7 @@ def get_single_song(bot, update):
     username = update.message.chat.username
     logging.log(logging.INFO, f'start to query message {message_id} in chat:{chat_id} from {username}')
 
-    url = update.effective_message.text
+    url = "'" + update.effective_message.text + "'"
     os.system('mkdir -p .temp')
     logging.log(logging.INFO, f'start downloading')
     bot.send_message(chat_id=chat_id, text="downloading...")

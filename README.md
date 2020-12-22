@@ -1,7 +1,7 @@
 # TelegramSpotifyDownloader
 
 ## What is it?
-This is a simple bot to download songs from YouTube in an MP3 format by using Spotify's HTTP link. This bot uses [spotdl](https://github.com/ritiek/spotify-downloader) to do that!
+This is a simple bot to download songs from YouTube in an MP3 format by using Spotify's HTTP link.
 
 <img src="https://github.com/gsoosk/TelegramSpotifyDownloader/blob/master/demo.png" width="450" />
 

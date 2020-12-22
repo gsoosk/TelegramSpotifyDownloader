@@ -40,16 +40,24 @@ def get_single_song(bot, update):
 
     logging.log(logging.INFO, f'start downloading')
     bot.send_message(chat_id=chat_id, text="Fetching...")
-    os.system(f'spotdl {url}')
+
+    if config["SPOTDL_DOWNLOADER"]:
+        os.system(f'spotdl {url}')
+    else if config["SPOTIFYDL_DOWNLOADER"]:
+        os.system(f'spotifydl {url}')
+    else:
+        logging.log(logging.ERROR, 'you should select one of downloaders')
 
     logging.log(logging.INFO, 'sending to client')
-
-    sent = 0 
-    bot.send_message(chat_id=chat_id, text="Sending to You...")
-    for file in os.listdir("."):
-        if file.endswith(".mp3"):
-            bot.send_audio(chat_id=chat_id, audio=open(f'./{file}', 'rb'), timeout=1000)
-            sent += 1
+    try:
+        sent = 0 
+        bot.send_message(chat_id=chat_id, text="Sending to You...")
+        for file in os.listdir("."):
+            if file.endswith(".mp3"):
+                bot.send_audio(chat_id=chat_id, audio=open(f'./{file}', 'rb'), timeout=1000)
+                sent += 1
+    except:
+        pass
 
     os.chdir('./..')
     os.system(f'rm -rf .temp{message_id}{chat_id}')

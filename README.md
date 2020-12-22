@@ -28,7 +28,7 @@ This bot can use one of bellow spotify downloaders to download the song/album/pl
 * [SpotDL(Python)](https://github.com/spotDL/spotify-downloader)
 * [SpotifyDL(JS)](https://github.com/SwapnilSoni1999/spotify-dl)
 
-_NOTE: spotdl release a new version(3) which has so many bugs and is unreliable. Therefore, I recommend spotify-dl._
+_NOTE: spotdl has released a new version(3) which has so many bugs and is unreliable. Therefore, I recommend spotify-dl._
 
 ## TODO
 - [ ] Update Dockerfile

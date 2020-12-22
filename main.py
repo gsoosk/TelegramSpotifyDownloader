@@ -43,7 +43,7 @@ def get_single_song(bot, update):
 
     if config["SPOTDL_DOWNLOADER"]:
         os.system(f'spotdl {url}')
-    else if config["SPOTIFYDL_DOWNLOADER"]:
+    elif config["SPOTIFYDL_DOWNLOADER"]:
         os.system(f'spotifydl {url}')
     else:
         logging.log(logging.ERROR, 'you should select one of downloaders')

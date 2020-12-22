@@ -26,4 +26,10 @@ For a simple authentication you can enable it in config file by setting `ENABLE`
 ## Downloader
 This bot can use one of bellow spotify downloaders to download the song/album/playlist. You should select one of them in the config file. 
 * [SpotDL(Python)](https://github.com/spotDL/spotify-downloader)
-* [SpotifyDL(JS) [Recommended]](https://github.com/SwapnilSoni1999/spotify-dl)
+* [SpotifyDL(JS)](https://github.com/SwapnilSoni1999/spotify-dl)
+
+_NOTE: spotdl release a new version(3) which has so many bugs and is unreliable. Therefore, I recommend spotify-dl._
+
+## TODO
+- [ ] Update Dockerfile
+- [ ] Add Progress Bar

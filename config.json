@@ -5,6 +5,6 @@
     "PASSWORD": "",
     "USERS": []
   },
-  "SPOTDL_DOWNLOADER": true,
-  "SPOTIFYDL_DOWNLOADER": false
+  "SPOTDL_DOWNLOADER": false,
+  "SPOTIFYDL_DOWNLOADER": true
 }

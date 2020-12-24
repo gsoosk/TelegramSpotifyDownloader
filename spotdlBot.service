@@ -1,0 +1,10 @@
+[Unit]
+Description=SpotDl Service
+
+[Service]
+Type=simple
+WorkingDirectory=/root/TelegramSpotifyDownloader
+ExecStart=/usr/bin/python3 /root/TelegramSpotifyDownloader/main.py
+
+[Install]
+WantedBy=multi-user.target

@@ -3,7 +3,7 @@ from telegram import Bot
 import json
 import logging
 import os
-
+from dotenv import dotenv_values
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                      level=logging.INFO)
@@ -16,10 +16,9 @@ def update_config():
     with open("config.json", "w") as write_file:
         json.dump(config, write_file)
 
-
-updater = Updater(config["TOKEN"])
+token = dotenv_values(".env")["TELEGRAM_TOKEN"]
+updater = Updater(token)
 dispatcher = updater.dispatcher
-
 
 def get_single_song_handler(bot, update):
     if config["AUTH"]["ENABLE"]:

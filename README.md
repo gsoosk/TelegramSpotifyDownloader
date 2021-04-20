@@ -7,16 +7,16 @@ This is a simple bot to download songs from YouTube in an MP3 format by using Sp
 
 ## How to run?
 
-At first, you should add your bot `TOKEN` to the config file.
+At first, you should add your bot token to a `.env` file with `TELEGRAM_TOKEN` key.
 
 Then install requirements:
 ```
 pip install requirements
-sudo apt install ffmpeg
+sudo snap install ffmpeg
 npm install -g spotify-dl
 ```
 
-Then you can run program with this command:
+and you can run program with this command:
 ```
 python main.py
 ```
@@ -30,6 +30,9 @@ This bot can use one of bellow spotify downloaders to download the song/album/pl
 
 _NOTE: spotdl has released a new version(3) which has so many bugs and is unreliable. Therefore, I recommend spotify-dl._
 
+## Docker 
+Simply build the docker file and then run it
+
 ## TODO
-- [ ] Update Dockerfile
+- [x] Update Dockerfile
 - [ ] Add Progress Bar

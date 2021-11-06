@@ -16,7 +16,11 @@ def update_config():
     with open("config.json", "w") as write_file:
         json.dump(config, write_file)
 
-token = dotenv_values(".env")["TELEGRAM_TOKEN"]
+try:
+    token = dotenv_values(".env")["TELEGRAM_TOKEN"]
+except:
+    token = os.environ['TELEGRAM_TOKEN']
+
 updater = Updater(token)
 dispatcher = updater.dispatcher
 

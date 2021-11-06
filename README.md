@@ -33,6 +33,13 @@ _NOTE: spotdl has released a new version(3) which has so many bugs and is unreli
 ## Docker 
 Simply build the docker file and then run it
 
+## Heroku Deployment
+To deploy on heroku:
+
+1. Change `config.json` if you want and commit it
+2. Put your bot token to a `.env` file with `TELEGRAM_TOKEN` key
+3. Run `./heroku_deploy.sh`
+
 ## TODO
 - [x] Update Dockerfile
 - [ ] Add Progress Bar

@@ -1,7 +1,26 @@
 # TelegramSpotifyDownloader
 
+<p align="center">
+  <a href="https://www.python.org">
+    <img src="http://ForTheBadge.com/images/badges/made-with-python.svg" width ="250">
+  </a>
+  <br>
+  <a href="https://github.com/CodeXBotz/File-Sharing-Bot/stargazers">
+    <img src="https://img.shields.io/github/stars/gsoosk/TelegramSpotifyDownloader?style=social">
+  </a>
+  <a href="https://github.com/CodeXBotz/File-Sharing-Bot/fork">
+    <img src="https://img.shields.io/github/forks/gsoosk/TelegramSpotifyDownloader?label=Fork&style=social">
+  </a>  
+</p>
+
 ## What is it?
 This is a simple bot to download songs from YouTube in an MP3 format by using Spotify's HTTP link.
+
+You can download: 
+* A single song
+* Albums
+* Playlists
+* Artists
 
 <img src="https://github.com/gsoosk/TelegramSpotifyDownloader/blob/master/demo.png" width="450" />
 

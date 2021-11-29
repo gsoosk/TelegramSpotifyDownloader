@@ -7,6 +7,9 @@
   <a href="https://heroku.com/deploy?template=https://github.com/gsoosk/TelegramSpotifyDownloader/tree/heroku">
     <img src="https://www.herokucdn.com/deploy/button.svg" width="180">
   </a>
+  <a href="https://t.me/spotdl_tel_bot">
+    <img src="https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white&label=Demo" width="240">
+  </a>
   <br>
   <a href="https://github.com/gsoosk/TelegramSpotifyDownloader/stargazers">
     <img src="https://img.shields.io/github/stars/gsoosk/TelegramSpotifyDownloader?style=social">
@@ -24,6 +27,7 @@ You can download:
 * Albums
 * Playlists
 * Artists
+
 
 <img src="https://github.com/gsoosk/TelegramSpotifyDownloader/blob/master/demo.png" width="450" />
 

@@ -4,6 +4,9 @@
   <a href="https://www.python.org">
     <img src="http://ForTheBadge.com/images/badges/made-with-python.svg" width ="250">
   </a>
+  <a href="https://heroku.com/deploy?template=https://github.com/gsoosk/TelegramSpotifyDownloader/tree/heroku">
+    <img src="https://www.herokucdn.com/deploy/button.svg" width="180">
+  </a>
   <br>
   <a href="https://github.com/gsoosk/TelegramSpotifyDownloader/stargazers">
     <img src="https://img.shields.io/github/stars/gsoosk/TelegramSpotifyDownloader?style=social">

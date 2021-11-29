@@ -55,7 +55,7 @@ _NOTE: spotdl has released a new version(3) which has so many bugs and is unreli
 ## Docker 
 Simply build the docker file and then run it
 
-## Heroku Deployment
+## Deploy manually on Heroku
 To deploy on heroku:
 
 1. Change `config.json` if you want and commit it

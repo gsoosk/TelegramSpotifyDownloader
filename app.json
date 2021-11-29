@@ -11,7 +11,7 @@
     "logo": "https://1000logos.net/wp-content/uploads/2021/04/Spotify-logo-500x281.png",
     "env": {
         "TELEGRAM_TOKEN": {
-            "description": "Your bot's token",
+            "description": "Your Bot token, Get it from @Botfather",
             "value": ""
         }
     },
@@ -22,5 +22,11 @@
         {
             "url": "heroku/python"
         }
-    ]
+    ],
+     "formation": {
+    "worker": {
+      "quantity": 1,
+      "size": "free"
+    }
+  }
   }

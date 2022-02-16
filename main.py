@@ -21,6 +21,8 @@ try:
 except:
     token = os.environ['TELEGRAM_TOKEN']
 
+telegram_token = 'token'
+
 updater = Updater(token=telegram_token, use_context=True)
 dispatcher = updater.dispatcher
 

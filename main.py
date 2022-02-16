@@ -21,9 +21,8 @@ try:
 except:
     token = os.environ['TELEGRAM_TOKEN']
 
-telegram_token = 'token'
-
-updater = Updater(token=telegram_token, use_context=True)
+updater = Updater(token, use_context=True)
+updater.start_polling()
 dispatcher = updater.dispatcher
 
 def get_single_song_handler(bot, update):
@@ -93,7 +92,3 @@ def authenticate(bot, update):
 
 handler = MessageHandler(Filters.text, get_single_song_handler)
 dispatcher.add_handler(handler=handler)
-
-POLLING_INTERVAL = 0.8
-updater.start_polling(poll_interval=POLLING_INTERVAL)
-updater.idle()

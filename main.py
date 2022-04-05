@@ -17,11 +17,11 @@ def update_config():
         json.dump(config, write_file)
 
 try:
-    token = dotenv_values(".env")["TELEGRAM_TOKEN"]
+    token = dotenv_values(".env")["5257632697:AAGDreqNkAB7xTrqQxzc8m21Uu6bdDNbvLE"]
 except:
-    token = os.environ['TELEGRAM_TOKEN']
+    token = os.environ['5257632697:AAGDreqNkAB7xTrqQxzc8m21Uu6bdDNbvLE']
 
-updater = Updater(token)
+updater = Updater(5257632697:AAGDreqNkAB7xTrqQxzc8m21Uu6bdDNbvLE)
 dispatcher = updater.dispatcher
 
 def get_single_song_handler(bot, update):

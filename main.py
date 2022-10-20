@@ -42,7 +42,7 @@ def get_single_song(bot, update):
     os.chdir(f'./.temp{message_id}{chat_id}')
 
     logging.log(logging.INFO, f'start downloading')
-    bot.send_message(chat_id=chat_id, text="Fetching...")
+    bot.send_message(chat_id=chat_id, text="Downloading...⚡⚡⚡")
 
     if config["SPOTDL_DOWNLOADER"]:
         os.system(f'spotdl {url}')
@@ -54,7 +54,7 @@ def get_single_song(bot, update):
     logging.log(logging.INFO, 'sending to client')
     try:
         sent = 0 
-        bot.send_message(chat_id=chat_id, text="Sending to You...")
+        bot.send_message(chat_id=chat_id, text="Uploading...🚀🚀🚀")
         files = [os.path.join(dp, f) for dp, dn, filenames in os.walk(".") for f in filenames if os.path.splitext(f)[1] == '.mp3']
         for file in files:
             bot.send_audio(chat_id=chat_id, audio=open(f'./{file}', 'rb'), timeout=1000)

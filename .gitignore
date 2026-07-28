@@ -1,6 +1,9 @@
 
 .env
 
+# Bot working files
+downloads/
+.temp*/
 # Created by https://www.gitignore.io/api/python,jetbrains+all
 # Edit at https://www.gitignore.io/?templates=python,jetbrains+all
 

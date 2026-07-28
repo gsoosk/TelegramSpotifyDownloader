@@ -28,36 +28,74 @@ You can download:
 * Playlists
 * Artists
 
+It shows a **live progress bar** while downloading and sends every track back with proper title/artist metadata.
+
 
 <img src="https://github.com/gsoosk/TelegramSpotifyDownloader/blob/master/demo.png" width="450" />
 
 ## How to run?
 
-At first, you should add your bot token to a `.env` file with `TELEGRAM_TOKEN` key.
+1. Add your bot token to a `.env` file with the `TELEGRAM_TOKEN` key:
+   ```
+   TELEGRAM_TOKEN=123456:your-telegram-bot-token
+   ```
 
-Then install requirements:
-```
-pip install requirements
-sudo snap install ffmpeg
-npm install -g spotify-dl
-```
+2. Install the requirements (Python 3.10+):
+   ```
+   pip install -r requirements.txt
+   ```
 
-and you can run program with this command:
-```
-python main.py
-```
+3. Install **ffmpeg** (required by spotdl). Either system-wide:
+   ```
+   sudo apt install ffmpeg        # Debian/Ubuntu
+   brew install ffmpeg            # macOS
+   ```
+   or let spotdl install it locally:
+   ```
+   spotdl --download-ffmpeg
+   ```
+
+4. Run the bot:
+   ```
+   python main.py
+   ```
+
+Then send any Spotify link (track, album, playlist or artist) to your bot.
+
 ## Authentication
-For a simple authentication you can enable it in config file by setting `ENABLE` to `true`. You also should set `PASSWORD` which users can authentican with. Bot uses config file to save users also. 
+The bot supports optional password protection. In `config.json` set:
+
+```json
+{
+  "AUTH": {
+    "ENABLE": true,
+    "PASSWORD": "your-secret",
+    "OWNER_ID": null,
+    "USERS": []
+  }
+}
+```
+
+When enabled, new users must send the password once to sign in. The first user to
+sign in becomes the `OWNER_ID`. Signed-in users are persisted in `config.json`, and
+anyone can sign out with `/logout`.
+
+Commands:
+* `/start` – welcome / sign in
+* `/help` – usage help
+* `/logout` – sign out
 
 ## Downloader
-This bot can use one of bellow spotify downloaders to download the song/album/playlist. You should select one of them in the config file. 
-* [SpotDL(Python)](https://github.com/spotDL/spotify-downloader)
-* [SpotifyDL(JS)](https://github.com/SwapnilSoni1999/spotify-dl)
-
-_NOTE: spotdl has released a new version(3) which has so many bugs and is unreliable. Therefore, I recommend spotify-dl._
+This bot uses [spotDL v4](https://github.com/spotDL/spotify-downloader) — the modern,
+stable rewrite — to find tracks on YouTube and download them with album art, lyrics and
+metadata. (The old note about spotdl v3 being unreliable no longer applies; v4 is solid.)
 
 ## Docker 
-Simply build the docker file and then run it
+Build and run:
+```
+docker build -t spotify-downloader .
+docker run --rm --env-file .env spotify-downloader
+```
 
 ## Deploy manually on Heroku
 To deploy on heroku:
@@ -68,4 +106,6 @@ To deploy on heroku:
 
 ## TODO
 - [x] Update Dockerfile
-- [ ] Add Progress Bar
+- [x] Update to python-telegram-bot v22 (async)
+- [x] Update to spotdl v4
+- [x] Add Progress Bar

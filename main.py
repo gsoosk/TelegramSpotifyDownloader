@@ -12,7 +12,6 @@ import logging
 import os
 import re
 import shutil
-import time
 import uuid
 from pathlib import Path
 
@@ -47,7 +46,36 @@ SPOTIFY_URL_RE = re.compile(
 
 # spotdl progress markers.
 FOUND_RE = re.compile(r"Found (\d+) song", re.IGNORECASE)
-DONE_MARKERS = ("Downloaded", "Skipping")
+COMPLETE_RE = re.compile(r"(\d+)/(\d+) complete")
+
+# Per-song stage lines emitted by spotdl's --simple-tui mode, e.g.
+#   "Rick Astley - Never Gonna Give You Up: Downloading"
+STAGE_RE = re.compile(
+    r"^(?P<name>.+): (?P<stage>Searching for song|Getting audio meta|Downloading|"
+    r"Converting|Embedding metadata|Done|Skipped|Error)$"
+)
+
+STAGE_FRACTION = {
+    "Searching for song": 0.15,
+    "Getting audio meta": 0.35,
+    "Downloading": 0.55,
+    "Converting": 0.75,
+    "Embedding metadata": 0.90,
+    "Done": 1.0,
+    "Skipped": 1.0,
+    "Error": 1.0,
+}
+
+STAGE_LABEL = {
+    "Searching for song": "🔎 Searching",
+    "Getting audio meta": "📋 Getting metadata",
+    "Downloading": "⬇️ Downloading audio",
+    "Converting": "🎛️ Converting",
+    "Embedding metadata": "🏷️ Adding tags",
+    "Done": "✅ Done",
+    "Skipped": "⏭️ Already downloaded",
+    "Error": "⚠️ Error",
+}
 
 import json
 
@@ -109,14 +137,29 @@ def try_login(chat_id: int, text: str) -> bool:
 # ---------------------------------------------------------------------------
 # Progress bar
 # ---------------------------------------------------------------------------
-def render_bar(done: int, total: int, width: int = 20) -> str:
-    if total > 0:
-        done = min(done, total)
-        filled = int(width * done / total)
-        bar = "█" * filled + "░" * (width - filled)
-        pct = int(100 * done / total)
-        return f"[{bar}] {pct}%  ({done}/{total})"
-    return f"⏳ Downloading… {done} track(s) done"
+def render_progress(state: dict, width: int = 20) -> str:
+    total = state["total"] or 1
+    completed = state["completed"]
+    stage = state["stage"]
+    frac = STAGE_FRACTION.get(stage, 0.0)
+    # A song counted as completed already contributes a full unit via `completed`.
+    current = completed + (0.0 if stage in ("Done", "Skipped", "Error") else frac)
+    overall = min(current / total, 1.0)
+
+    filled = int(width * overall)
+    bar = "█" * filled + "░" * (width - filled)
+    pct = int(overall * 100)
+
+    lines = []
+    if total > 1:
+        lines.append(f"⬇️ Downloading  ({min(completed + 1, total)}/{total})")
+    else:
+        lines.append("⬇️ Downloading")
+    if state["name"]:
+        lines.append(f"🎵 {state['name']}")
+    lines.append(STAGE_LABEL.get(stage, "…"))
+    lines.append(f"[{bar}] {pct}%")
+    return "\n".join(lines)
 
 
 # ---------------------------------------------------------------------------
@@ -165,12 +208,17 @@ async def logout(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 # Download flow
 # ---------------------------------------------------------------------------
 async def run_spotdl(url: str, out_dir: Path, progress_cb) -> None:
-    """Run spotdl and stream its output, invoking progress_cb(done, total)."""
+    """Run spotdl in simple-tui mode and stream per-song stage progress.
+
+    progress_cb(state) is awaited whenever the state changes, where state holds
+    total/completed song counts and the current song name and stage.
+    """
     output_template = str(out_dir / "{artists} - {title}.{output-ext}")
     cmd = [
         "spotdl",
         "download",
         url,
+        "--simple-tui",
         "--output",
         output_template,
     ]
@@ -182,8 +230,7 @@ async def run_spotdl(url: str, out_dir: Path, progress_cb) -> None:
         stderr=asyncio.subprocess.STDOUT,
     )
 
-    total = 0
-    done = 0
+    state = {"total": 0, "completed": 0, "name": "", "stage": ""}
     assert process.stdout is not None
     async for raw in process.stdout:
         line = raw.decode(errors="ignore").strip()
@@ -193,13 +240,25 @@ async def run_spotdl(url: str, out_dir: Path, progress_cb) -> None:
 
         found = FOUND_RE.search(line)
         if found:
-            total = int(found.group(1))
-            await progress_cb(done, total)
+            state["total"] = int(found.group(1))
+            await progress_cb(state)
             continue
 
-        if any(line.startswith(marker) for marker in DONE_MARKERS):
-            done += 1
-            await progress_cb(done, total)
+        complete = COMPLETE_RE.search(line)
+        if complete:
+            state["completed"] = int(complete.group(1))
+            state["total"] = max(state["total"], int(complete.group(2)))
+            await progress_cb(state)
+            continue
+
+        stage_match = STAGE_RE.match(line)
+        if stage_match:
+            state["name"] = stage_match.group("name")
+            state["stage"] = stage_match.group("stage")
+            # "Done"/"Skipped" completion is reflected by the "N/M complete" line;
+            # rendering them here would briefly show 0% before that line arrives.
+            if state["stage"] not in ("Done", "Skipped"):
+                await progress_cb(state)
 
     await process.wait()
     if process.returncode != 0:
@@ -237,18 +296,16 @@ async def handle_link(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
 
     status = await message.reply_text("🔎 Fetching…")
 
-    last_edit = {"t": 0.0, "text": ""}
+    last_edit = {"text": ""}
 
-    async def progress_cb(done: int, total: int) -> None:
-        now = time.monotonic()
-        bar = render_bar(done, total)
-        # Throttle edits to avoid Telegram rate limits.
-        if bar == last_edit["text"] or (now - last_edit["t"] < 1.5 and done != total):
+    async def progress_cb(state: dict) -> None:
+        text = render_progress(state)
+        # Only edit when the rendered text actually changes.
+        if text == last_edit["text"]:
             return
-        last_edit["t"] = now
-        last_edit["text"] = bar
+        last_edit["text"] = text
         try:
-            await status.edit_text(f"⬇️ Downloading…\n{bar}")
+            await status.edit_text(text)
         except Exception:
             pass
 

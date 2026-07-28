@@ -1,3 +1,3 @@
-python-telegram-bot==12.3.0
-spotdl
-python-dotenv
+python-telegram-bot==22.8
+spotdl==4.5.2
+python-dotenv==1.0.1

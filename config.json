@@ -2,8 +2,7 @@
   "AUTH": {
     "ENABLE": false,
     "PASSWORD": "",
+    "OWNER_ID": null,
     "USERS": []
-  },
-  "SPOTDL_DOWNLOADER": true,
-  "SPOTIFYDL_DOWNLOADER": false
+  }
 }
